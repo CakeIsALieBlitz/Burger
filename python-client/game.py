@@ -125,6 +125,7 @@ class Board:
 
 class Hero:
     def __init__(self, hero):
+        self.id = hero['id']
         self.name = hero['name']
         self.pos = hero['pos']
         self.life = hero['life']

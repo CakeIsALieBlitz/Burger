@@ -104,27 +104,45 @@ class SimpleBot(Bot):
 
     def trouverFritte(self, game):
         self.current_target = "fries"
-        return choice(list(game.fries_locs.keys()))
+        return self.getNearestObjective(game.myHero, game.fries_locs)
 
     def trouverBurger(self, game):
         self.current_target = "burger"
-        return choice(list(game.burger_locs.keys()))
+        return self.getNearestObjective(game.myHero, game.burger_locs)
 
+    def distance(self, pos1, pos2):
+        x = (pos2[0] - pos1["y"])
+        y = (pos2[1] - pos1["x"])
+        return y, x
 
-class IntelligentBot(Bot):
-    def move(self, state):
-        game = Game(state)
-        dirs = ['Stay', 'North', 'South', 'East', 'West']
-        return choice(dirs)
+    def getNearestObjective(self, myHero, objective_type_locs):
+        not_owned_objective = []
 
-    def getClientPosition(self):
-        print("GetClient")
+        for objective in objective_type_locs.keys():
+            if objective_type_locs[objective] != myHero.id:
+                not_owned_objective.append(objective)
 
-    def getFriesPosition(self):
-        print("GetFries")
+        deltaX = 999999
+        deltaY = 999999
 
-    def getBurgerPosition(self):
-        print("GetBurger")
+        for objective_position in not_owned_objective:
+            distance_calculated = self.distance(myHero.pos, objective_position)
+            if (deltaX + deltaY > distance_calculated[0] + distance_calculated[1]):
+                deltaX = distance_calculated[0]
+                deltaY = distance_calculated[1]
+                self.wantedPosition = objective_position
 
-    def getDirections(self):
-        print("GetDirection")
+        return (deltaX, deltaY)
+
+    def getNearestCustomer(self, myHero, objective_type_locs):
+        deltaX = 999999
+        deltaY = 999999
+
+        for objective_position in objective_type_locs:
+            distance_calculated = self.distance(myHero.pos, objective_position)
+            if (deltaX + deltaY > distance_calculated[0] + distance_calculated[1]):
+                deltaX = distance_calculated[0]
+                deltaY = distance_calculated[1]
+                self.wantedPosition = objective_position
+
+        return (deltaX, deltaY)
