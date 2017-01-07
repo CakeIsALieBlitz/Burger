@@ -99,7 +99,7 @@ class SimpleBot(Bot):
         self.calories = game.myHero.calories
         self.nbCustomer += 0
         self.current_target = "Client"
-        self.customer = self.getNearestCustomer(game.myHero, game.customers)
+        self.customer = game.customers[self.nbCustomer]
         self.target = self.customer.pos
 
 

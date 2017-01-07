@@ -61,6 +61,7 @@ class Game:
                 elif obj == CUSTOMER:
                     self.customers_locs.append((row, col))
 
+
         for i in range(0, len(self.customers)):
             self.customers[i].pos = self.customers_locs[i]
 
