@@ -16,7 +16,7 @@ class PathFinding:
             theRealMap["map"] = theMap["tiles"]
             url +=  urllib.parse.urlencode(theRealMap)
 
-            response = requests.get(url, timeout=0.250)
+            response = requests.get(url, timeout=0.200)
 
             return response.json()["direction"]
         except:
