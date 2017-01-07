@@ -20,5 +20,5 @@ class PathFinding:
 
             return response.json()["direction"]
         except:
-            print("Alert shit happened")
+            #print("Alert shit happened")
             return 'Stay'

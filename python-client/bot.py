@@ -47,19 +47,19 @@ class SimpleBot(Bot):
     def __getDirection(self, game, target, start):
         theMap = game.state['game']['board']
         size = game.board.size
-        print(target)
+        #print(target)
         return self.pathFinder.getPath(theMap, size, start, target)
 
     def getNewTarget(self, game):
         #self.customer = self.getNearestCustomer(game.myHero, game.customers, game)
         if game.myHero.nbFrittes < self.customer.french_fries :
-            print("frite")
+            #print("frite")
             self.target = self.trouverFritte(game)
         elif game.myHero.nbBurger < self.customer.burger :
-            print("burger")
+            #print("burger")
             self.target = self.trouverBurger(game)
         else:
-            print("customer")
+            #print("customer")
             self.getNewCustomer(game)
 
     def getNewCustomer(self, game):
@@ -83,11 +83,11 @@ class SimpleBot(Bot):
     def getNearestObjective(self, myHero, objective_type_locs):
         not_owned_objective = []
 
-        print(objective_type_locs)
+        # print(objective_type_locs)
         for objective in objective_type_locs.keys():
             if objective_type_locs[objective] != myHero.id:
                 not_owned_objective.append(objective)
-        print(not_owned_objective)
+        # print(not_owned_objective)
 
         deltaX = 999999
         deltaY = 999999
