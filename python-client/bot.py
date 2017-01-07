@@ -99,7 +99,7 @@ class SimpleBot(Bot):
         self.calories = game.myHero.calories
         self.nbCustomer += 0
         self.current_target = "Client"
-        self.customer = game.customers[self.nbCustomer]
+        self.customer = self.getNearestCustomer(game.customers)
         self.target = self.customer.pos
 
 
@@ -116,7 +116,7 @@ class SimpleBot(Bot):
         y = (pos2[1] - pos1["y"])
         return y, x
 
-    def getNearestObjective(self, myHero, objective_type_locs, game):
+    def getNearestObjective(self, myHero, objective_type_locs):
         not_owned_objective = []
 
         for objective in objective_type_locs.keys():
@@ -140,11 +140,12 @@ class SimpleBot(Bot):
         deltaX = 999999
         deltaY = 999999
 
+        wantedPosition = myHero.pos
         for objective_position in objective_type_locs:
             distance_calculated = self.distance(myHero.pos, objective_position)
             if (deltaX + deltaY > distance_calculated[0] + distance_calculated[1]):
                 deltaX = distance_calculated[0]
                 deltaY = distance_calculated[1]
-                self.wantedPosition = objective_position
+                wantedPosition = objective_position
 
-        return (deltaX, deltaY)
+        return wantedPosition
