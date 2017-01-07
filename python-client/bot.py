@@ -42,8 +42,10 @@ class SimpleBot(Bot):
             self.isFirstTime = False
             self.customer = game.customers[0]
             self.target = game.myHero.pos
+            self.nbFries = game.myHero.nbFrittes
+            self.nbBurger = game.myHero.nbBurger
 
-        if game.myHero.pos == self.target :
+        if game.myHero.pos == self.target:
             if game.myHero.nbFrittes < self.customer.french_fries :
                 self.target = self.trouverFritte(game)
             elif game.myHero.nbBurger < self.customer.burger :
@@ -51,7 +53,7 @@ class SimpleBot(Bot):
             else:
                 self.target = self.customer.pos
 
-            return self.__getDirection(game, self.target, game.myHero.pos)
+        return self.__getDirection(game, self.target, game.myHero.pos)
 
     def __getDirection(self, game, target, start):
         theMap = game.state['game']['board']
@@ -59,12 +61,10 @@ class SimpleBot(Bot):
         return self.pathFinder.getPath(theMap, size, start, target)
 
     def trouverFritte(self, game):
-        key = choice(game.fries_locs.keys())
-        print(game.fries_locs[key])
-        return game.fries_locs.pop(key)
+        return choice(list(game.fries_locs.keys()))
 
     def trouverBurger(self, game):
-        return game.burger_locs.pop()
+        return choice(list(game.burger_locs.keys()))
 
 
 class IntelligentBot(Bot):
