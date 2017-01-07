@@ -19,7 +19,7 @@ class RandomBot(Bot):
             self.targets = list(game.customers_locs)
             self.target = self.targets[0]
 
-        return __getDirection(self, self.target, game)
+        return self.__getDirection(self.target, game)
 
     def __getDirection(self, target, game):
         start = "(" + game.myHero.pos[0] + "," + game.myHero.pos[1] + ")"
