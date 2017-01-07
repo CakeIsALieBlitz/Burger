@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import sys
 import requests
+import webbrowser
 
 from bot import SimpleBot
 
@@ -93,11 +94,14 @@ def start(server_url, key, mode, game_id, bot):
     # Create a requests session that will be used throughout the game
     session = requests.session()
 
+    print("GONEPGEIP " + mode)
     if mode == 'arena':
         print(u'Connected and waiting for other players to join…')
     # Get the initial state
     state = get_new_game_state(session, server_url, key, mode, game_id)
     print("Playing at: " + state['viewUrl'])
+    if mode == 'training':
+        webbrowser.open(state['viewUrl'], new=2)
 
     while not is_finished(state):
         # Choose a move
