@@ -8,12 +8,18 @@ class Bot:
 
 
 class RandomBot(Bot):
+
+    def __init__(self):
+        self.targets = []
+
     def move(self, state):
         game = Game(state)
 
-        target = game.customers_locs
+        if (len(self.targets) == 0):
+            self.targets = list(game.customers_locs)
+            self.target = self.targets[0]
 
-        return __getDirection(self, target, game)
+        return __getDirection(self, self.target, game)
 
     def __getDirection(self, target, game):
         start = "(" + game.myHero.pos[0] + "," + game.myHero.pos[1] + ")"
