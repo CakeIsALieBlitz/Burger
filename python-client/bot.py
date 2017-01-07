@@ -6,6 +6,12 @@ from PathFinding import PathFinding
 class Bot:
     pass
 
+class BasicBot(Bot):
+    def move(self, state):
+        game = Game(state)
+        dirs = ['Stay', 'North', 'South', 'East', 'West']
+        return choice(dirs)
+
 
 class RandomBot(Bot):
     def __init__(self):
