@@ -99,17 +99,17 @@ class SimpleBot(Bot):
         self.calories = game.myHero.calories
         self.nbCustomer += 0
         self.current_target = "Client"
-        self.customer = self.getNearestCustomer(game.customers)
+        self.customer = self.getNearestCustomer(game.myHero, game.customers)
         self.target = self.customer.pos
 
 
     def trouverFritte(self, game):
         self.current_target = "fries"
-        return self.getNearestObjective(game.myHero, game.fries_locs, game)
+        return self.getNearestObjective(game.myHero, game.fries_locs)
 
     def trouverBurger(self, game):
         self.current_target = "burger"
-        return self.getNearestObjective(game.myHero, game.burger_locs, game)
+        return self.getNearestObjective(game.myHero, game.burger_locs)
 
     def distance(self, pos1, pos2):
         x = (pos2[0] - pos1["x"])
