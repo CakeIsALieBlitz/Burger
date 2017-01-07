@@ -15,59 +15,62 @@ class BasicBot(Bot):
 class RandomBot(Bot):
 
     def __init__(self):
-        self.targets = []
+        self.pathFinder = PathFinding()
 
     def move(self, state):
         game = Game(state)
 
-        if (len(self.targets) == 0):
-            self.targets = list(game.customers_locs)
-            self.target = self.targets[0]
+        client_target = game.customers_locs.pop()
+        hero_pos = game.myHero.pos
 
-        return self.__getDirection(self.target, game)
+        return self.__getDirection(game, client_target, hero_pos)
 
-    def __getDirection(self, target, game):
-        start = "(" + game.myHero.pos[0] + "," + game.myHero.pos[1] + ")"
-        target = "(" + target[0] + "," + target[1] + ")"
-        return PathFinding.getPath(game.board.tiles, game.board.size, start, target)
+    def __getDirection(self, game, target, start):
+        theMap =game.state['game']['board']
+        size = game.board.size
+        return self.pathFinder.getPath(theMap,size, start, target)
 
 class SimpleBot(Bot):
     def __init__(self):
         self.isFirstTime = True
+        self.pathFinder = PathFinding()
 
     def move(self, state):
         game = Game(state)
 
         if (self.isFirstTime):
             self.isFirstTime = False
-            self.custommer = game.custommers[0]
+            self.customer = game.customers[0]
             self.target = game.myHero.pos
 
-        if(game.myHero.pos == self.target):
-            if(game.myHero.nbFrittes < self.custommer.french_fries):
+        if game.myHero.pos == self.target :
+            if game.myHero.nbFrittes < self.customer.french_fries :
                 self.target = self.trouverFritte(game)
-            elif(game.myHero.nbBurger < self.custommer.burger):
+            elif game.myHero.nbBurger < self.customer.burger :
                 self.target = self.trouverBurger(game)
             else:
-                self.target = self.custommer.pos
+                self.target = self.customer.pos
 
-        return self.__getDirection(self.target, game)
+            return self.__getDirection(game, self.target, game.myHero.pos)
+
+    def __getDirection(self, game, target, start):
+        theMap = game.state['game']['board']
+        size = game.board.size
+        return self.pathFinder.getPath(theMap, size, start, target)
 
     def trouverFritte(self, game):
-        return choice(game.fries_locs)
+        key = choice(game.fries_locs.keys())
+        print(game.fries_locs[key])
+        return game.fries_locs.pop(key)
 
     def trouverBurger(self, game):
-        return choice(game.burger_locs)
-
-    def __getDirection(self, target, game):
-        return 'North'
+        return game.burger_locs.pop()
 
 
 class IntelligentBot(Bot):
     def move(self, state):
         game = Game(state)
         dirs = ['Stay', 'North', 'South', 'East', 'West']
-        game.board.passable
         return choice(dirs)
 
     def getClientPosition(self):
