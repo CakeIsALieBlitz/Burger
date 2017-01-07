@@ -33,13 +33,8 @@ class SimpleBot(Bot):
     def move(self, state):
         game = Game(state)
         if(self.isFirstTime):
-                #self.customer = game.customers[0]
             self.customer = self.getNearestCustomer(game.myHero, game.customers, game)
             self.isFirstTime = False
-            self.getNewTarget(game)
-            self.nbBurger = game.myHero.nbBurger
-            self.nbFries = game.myHero.nbFrittes
-            self.calories = game.myHero.calories
 
         self.getNewTarget(game)
         return self.__getDirection(game, self.target, game.myHero.pos)
@@ -47,11 +42,10 @@ class SimpleBot(Bot):
     def __getDirection(self, game, target, start):
         theMap = game.state['game']['board']
         size = game.board.size
-        print(target)
         return self.pathFinder.getPath(theMap, size, start, target)
 
     def getNewTarget(self, game):
-        #self.customer = self.getNearestCustomer(game.myHero, game.customers, game)
+        self.customer = self.getNearestCustomer(game.myHero, game.customers, game)
         if game.myHero.nbFrittes < self.customer.french_fries :
             print("frite")
             self.target = self.trouverFritte(game)
@@ -61,6 +55,7 @@ class SimpleBot(Bot):
         else:
             print("customer")
             self.getNewCustomer(game)
+            self.target = self.customer.pos
 
     def getNewCustomer(self, game):
         self.customer = self.getNearestCustomer(game.myHero, game.customers, game)
