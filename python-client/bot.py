@@ -47,13 +47,13 @@ class SimpleBot(Bot):
     def getNewTarget(self, game):
         self.customer = self.getNearestCustomer(game.myHero, game.customers, game)
         if game.myHero.nbFrittes < self.customer.french_fries :
-            print("frite")
+            #print("frite")
             self.target = self.trouverFritte(game)
         elif game.myHero.nbBurger < self.customer.burger :
-            print("burger")
+            #print("burger")
             self.target = self.trouverBurger(game)
         else:
-            print("customer")
+            #print("customer")
             self.getNewCustomer(game)
             self.target = self.customer.pos
 
@@ -71,18 +71,18 @@ class SimpleBot(Bot):
         return self.getNearestObjective(game.myHero, game.burger_locs)
 
     def distance(self, pos1, pos2):
-        x = (pos2[0] - pos1["x"])
-        y = (pos2[1] - pos1["y"])
+        x = (pos2[0] - pos1["y"])
+        y = (pos2[1] - pos1["x"])
         return y, x
 
     def getNearestObjective(self, myHero, objective_type_locs):
         not_owned_objective = []
 
-        print(objective_type_locs)
+        # print(objective_type_locs)
         for objective in objective_type_locs.keys():
-            if objective_type_locs[objective] != myHero.id:
+            if objective_type_locs[objective] != str(myHero.id):
                 not_owned_objective.append(objective)
-        print(not_owned_objective)
+        # print(not_owned_objective)
 
         deltaX = 999999
         deltaY = 999999
