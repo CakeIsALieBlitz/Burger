@@ -56,6 +56,10 @@ class SimpleBot(Bot):
 
     def updateClient(self, game):
         print("updateClient")
+        if(game.myHero.nbBurger < self.nbBurger):
+            self.getNewTarget(game)
+        if(game.myHero.nbFrittes < self.nbFries):
+            self.getNewTarget(game)
         if(self.calories < game.myHero.calories):
             print("on a un customer")
             self.getNewTarget(game)
