@@ -43,7 +43,7 @@ class Game:
         self.heroes_locs = {}
         self.taverns_locs = set()
         self.spikes_locs = set()
-        self.customers_locs = set()
+        self.customers_locs = []
         self.myHero = Hero(state['hero'])
         for row in range(len(self.board.tiles)):
             for col in range(len(self.board.tiles[row])):
@@ -59,7 +59,11 @@ class Game:
                 elif obj == SPIKE:
                     self.spikes_locs.add((row, col))
                 elif obj == CUSTOMER:
-                    self.customers_locs.add((row, col))
+                    self.customers_locs.append((row, col))
+
+        for i in range(0, len(self.customers)):
+            self.customers[i].pos = self.customers_locs[i]
+
 
 
 class Board:
@@ -125,6 +129,8 @@ class Hero:
         self.pos = hero['pos']
         self.life = hero['life']
         self.calories = hero['calories']
+        self.nbFrittes = hero['frenchFriesCount']
+        self.nbBurger = hero['burgerCount']
 
 
 class Customer:
@@ -133,3 +139,4 @@ class Customer:
         self.burger = customer['burger']
         self.french_fries = customer['frenchFries']
         self.fulfilled_orders = customer['fulfilledOrders']
+        self.pos = ()
