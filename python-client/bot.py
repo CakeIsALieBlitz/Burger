@@ -126,14 +126,15 @@ class SimpleBot(Bot):
         deltaX = 999999
         deltaY = 999999
 
+        wantedPosition = myHero.pos
         for objective_position in not_owned_objective:
             distance_calculated = self.distance(myHero.pos, objective_position)
             if (deltaX + deltaY > distance_calculated[0] + distance_calculated[1]):
                 deltaX = distance_calculated[0]
                 deltaY = distance_calculated[1]
-                self.wantedPosition = objective_position
+                wantedPosition = objective_position
 
-        return self.wantedPosition
+        return wantedPosition
 
     def getNearestCustomer(self, myHero, objective_type_locs):
         deltaX = 999999
