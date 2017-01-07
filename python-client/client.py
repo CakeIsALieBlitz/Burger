@@ -94,7 +94,6 @@ def start(server_url, key, mode, game_id, bot):
     # Create a requests session that will be used throughout the game
     session = requests.session()
 
-    print("GONEPGEIP " + mode)
     if mode == 'arena':
         print(u'Connected and waiting for other players to join…')
     # Get the initial state
