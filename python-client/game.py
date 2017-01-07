@@ -44,6 +44,7 @@ class Game:
         self.taverns_locs = set()
         self.spikes_locs = set()
         self.customers_locs = set()
+        self.myHero = Hero(state['hero'])
         for row in range(len(self.board.tiles)):
             for col in range(len(self.board.tiles[row])):
                 obj = self.board.tiles[row][col]
