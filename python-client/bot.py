@@ -40,20 +40,40 @@ class SimpleBot(Bot):
 
         if (self.isFirstTime):
             self.isFirstTime = False
-            self.customer = game.customers[0]
-            self.target = game.myHero.pos
+            self.customer = 0
+            self.target = self.trouverFritte(game)
             self.nbFries = game.myHero.nbFrittes
             self.nbBurger = game.myHero.nbBurger
+            self.bump = False
 
-        if game.myHero.pos == self.target:
-            if game.myHero.nbFrittes < self.customer.french_fries :
-                self.target = self.trouverFritte(game)
-            elif game.myHero.nbBurger < self.customer.burger :
-                self.target = self.trouverBurger(game)
+        print(self.isAdjacent(game.myHero.pos, self.target))
+
+        if self.isAdjacent(game.myHero.pos, self.target):
+            if self.bump:
+                self.bump = False
+                if game.myHero.nbFrittes < game.customers[self.customer].french_fries:
+                    self.target = self.trouverFritte(game)
+                elif game.myHero.nbBurger < game.customers[self.customer].burger:
+                    self.target = self.trouverBurger(game)
+                else:
+                    self.target = game.customers[self.customer].pos
             else:
-                self.target = self.customer.pos
+                self.bump = True
 
         return self.__getDirection(game, self.target, game.myHero.pos)
+
+    def isAdjacent(self, pos1, pos2):
+        pos1 = list(pos1)
+        pos2 = list(pos2)
+        print(pos1)
+        print(pos2)
+        if pos1[0] == pos2[0]:
+            if abs(pos1[1] - pos2[1]) == 1:
+                return True
+        elif pos1[1] == pos2[1]:
+            if abs(pos1[0] - pos2[0]) == 1:
+                return True
+        return False
 
     def __getDirection(self, game, target, start):
         theMap = game.state['game']['board']
@@ -65,6 +85,11 @@ class SimpleBot(Bot):
 
     def trouverBurger(self, game):
         return choice(list(game.burger_locs.keys()))
+
+class Target:
+    def __init__(self, pos, type):
+        self.pos = pos
+        self.type = type
 
 
 class IntelligentBot(Bot):

@@ -6,7 +6,7 @@ class PathFinding:
         self.path = "http://game.blitz.codes:8081/pathfinding/direction"
     def getPath(self, theMap, size, start, target):
         try:
-            start_f = "(" + str(start["x"]) + "," + str(start["y"]) + ")"
+            start_f = "(" + str(start[0]) + "," + str(start[1]) + ")"
             target_f = "(" + str(target[0]) + "," + str(target[1]) + ")"
             url = ""
             url += self.path + "?size=" + str(size)
