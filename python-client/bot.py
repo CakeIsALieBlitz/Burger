@@ -52,6 +52,7 @@ class SimpleBot(Bot):
     def __getDirection(self, game, target, start):
         theMap = game.state['game']['board']
         size = game.board.size
+        print(target)
         return self.pathFinder.getPath(theMap, size, start, target)
 
     def updateClient(self, game):
@@ -104,18 +105,18 @@ class SimpleBot(Bot):
 
     def trouverFritte(self, game):
         self.current_target = "fries"
-        return self.getNearestObjective(game.myHero, game.fries_locs)
+        return self.getNearestObjective(game.myHero, game.fries_locs, game)
 
     def trouverBurger(self, game):
         self.current_target = "burger"
-        return self.getNearestObjective(game.myHero, game.burger_locs)
+        return self.getNearestObjective(game.myHero, game.burger_locs, game)
 
     def distance(self, pos1, pos2):
-        x = (pos2[0] - pos1["y"])
-        y = (pos2[1] - pos1["x"])
+        x = (pos2[0] - pos1["x"])
+        y = (pos2[1] - pos1["y"])
         return y, x
 
-    def getNearestObjective(self, myHero, objective_type_locs):
+    def getNearestObjective(self, myHero, objective_type_locs, game):
         not_owned_objective = []
 
         for objective in objective_type_locs.keys():
@@ -132,7 +133,7 @@ class SimpleBot(Bot):
                 deltaY = distance_calculated[1]
                 self.wantedPosition = objective_position
 
-        return (deltaX, deltaY)
+        return self.wantedPosition
 
     def getNearestCustomer(self, myHero, objective_type_locs):
         deltaX = 999999
