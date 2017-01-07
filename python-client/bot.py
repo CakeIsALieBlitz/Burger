@@ -8,17 +8,20 @@ class Bot:
 
 
 class RandomBot(Bot):
+    def __init__(self):
+        self.pathFinder = PathFinding()
     def move(self, state):
         game = Game(state)
 
-        target = game.customers_locs
+        client_target = game.customers_locs.pop()
+        hero_pos = game.myHero.pos
 
-        return __getDirection(self, target, game)
+        return self.__getDirection(game, client_target, hero_pos)
 
-    def __getDirection(self, target, game):
-        start = "(" + game.myHero.pos[0] + "," + game.myHero.pos[1] + ")"
-        target = "(" + target[0] + "," + target[1] + ")"
-        return PathFinding.getPath(game.board.tiles, game.board.size, start, target)
+    def __getDirection(self, game, target, start):
+        theMap =game.state['game']['board']
+        size = game.board.size
+        return self.pathFinder.getPath(theMap,size, start, target)
 
 class IntelligentBot(Bot):
     def move(self, state):
