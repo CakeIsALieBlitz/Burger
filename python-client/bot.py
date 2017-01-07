@@ -32,21 +32,16 @@ class SimpleBot(Bot):
 
     def move(self, state):
         game = Game(state)
-        self.updateOrder(game)
         if(self.isFirstTime):
-            self.customer = game.customers[0]
+                #self.customer = game.customers[0]
+            self.customer = self.getNearestCustomer(game.myHero, game.customers, game)
             self.isFirstTime = False
             self.getNewTarget(game)
             self.nbBurger = game.myHero.nbBurger
             self.nbFries = game.myHero.nbFrittes
             self.calories = game.myHero.calories
-        elif(self.current_target == "fries"):
-            self.updateFries(game)
-        elif(self.current_target == "burger"):
-             self.updateBurger(game)
-        else:
-            self.updateClient(game)
 
+        self.getNewTarget(game)
         return self.__getDirection(game, self.target, game.myHero.pos)
 
     def __getDirection(self, game, target, start):
@@ -55,51 +50,20 @@ class SimpleBot(Bot):
         print(target)
         return self.pathFinder.getPath(theMap, size, start, target)
 
-    def updateClient(self, game):
-        if(game.myHero.nbBurger < self.nbBurger):
-            self.getNewTarget(game)
-        if(game.myHero.nbFrittes < self.nbFries):
-            self.getNewTarget(game)
-        if(self.calories < game.myHero.calories):
-            self.getNewTarget(game)
-
-    def updateFries(self, game):
-        if(game.myHero.nbFrittes < self.nbFries):
-            self.getNewTarget(game)
-        elif(game.myHero.nbFrittes > self.nbFries):
-            self.getNewTarget(game)
-
-    def updateOrder(self, game):
-        if(not self.isFirstTime):
-            nowOrder = game.customers[self.nbCustomer]
-            if(self.customer.burger != nowOrder.burger):
-                self.getNewTarget(game)
-                self.customer = game.customers[self.nbCustomer]
-            if(self.customer.french_fries != nowOrder.french_fries):
-                self.getNewTarget(game)
-                self.customer = game.customers[self.nbCustomer]
-
-    def updateBurger(self, game):
-        if(game.myHero.nbBurger < self.nbBurger):
-            self.getNewTarget(game)
-        elif(game.myHero.nbBurger > self.nbBurger):
-            self.getNewTarget(game)
-
     def getNewTarget(self, game):
+        #self.customer = self.getNearestCustomer(game.myHero, game.customers, game)
         if game.myHero.nbFrittes < self.customer.french_fries :
+            print("frite")
             self.target = self.trouverFritte(game)
         elif game.myHero.nbBurger < self.customer.burger :
+            print("burger")
             self.target = self.trouverBurger(game)
         else:
+            print("customer")
             self.getNewCustomer(game)
 
     def getNewCustomer(self, game):
-        self.nbFries = 0
-        self.nbBurger =0
-        self.calories = game.myHero.calories
-        self.nbCustomer += 0
-        self.current_target = "Client"
-        self.customer = game.customers[self.nbCustomer]
+        self.customer = self.getNearestCustomer(game.myHero, game.customers, game)
         self.target = self.customer.pos
 
 
@@ -119,9 +83,11 @@ class SimpleBot(Bot):
     def getNearestObjective(self, myHero, objective_type_locs):
         not_owned_objective = []
 
+        print(objective_type_locs)
         for objective in objective_type_locs.keys():
             if objective_type_locs[objective] != myHero.id:
                 not_owned_objective.append(objective)
+        print(not_owned_objective)
 
         deltaX = 999999
         deltaY = 999999
@@ -136,16 +102,16 @@ class SimpleBot(Bot):
 
         return wantedPosition
 
-    def getNearestCustomer(self, myHero, objective_type_locs):
+    def getNearestCustomer(self, myHero, customers, game):
         deltaX = 999999
         deltaY = 999999
-
-        wantedPosition = myHero.pos
-        for objective_position in objective_type_locs:
+        wantedCustomer = customers[0]
+        for i in range(0,len(customers)):
+            objective_position = customers[i].pos
             distance_calculated = self.distance(myHero.pos, objective_position)
             if (deltaX + deltaY > distance_calculated[0] + distance_calculated[1]):
                 deltaX = distance_calculated[0]
                 deltaY = distance_calculated[1]
-                wantedPosition = objective_position
+                wantedCustomer = customers[i]
 
-        return wantedPosition
+        return wantedCustomer
